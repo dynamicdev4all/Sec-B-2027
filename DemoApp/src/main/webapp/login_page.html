@@ -5,11 +5,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="LoginServlet">
-	<input type="text" placeholder="Please enter your Email Address.">
-	<input type="text" placeholder="Please enter your Password.">
+<form action="LoginServlet" method="post">
+	<input type="text" placeholder="Please enter your Email Address." name="email_key">
+	<input type="text" placeholder="Please enter your Password." name="password_key">
 	<br>
-	<a type="button" href="">Login Now</a>
+	<button type="submit">Login Now</button>
 </form>
 </body>
 </html>
