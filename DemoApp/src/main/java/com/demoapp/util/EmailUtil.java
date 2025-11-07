@@ -13,15 +13,15 @@ import jakarta.mail.internet.MimeMessage;
 
 public class EmailUtil {
 	
-	static void sendRegisterOTP(String to, String userName, int OTP) {
+	public static boolean sendRegisterOTP(String to, String userName, int OTP) {
 		String senderEmail = "test.duck.mail@gmail.com";
-		String senderPassword = "yvffdtkjddaaqfbc";
+		String senderPassword = "mmnzmrjapqjokcbf";
 		
 		Properties emailProperties = new Properties();
-		emailProperties.put("smtp.mail.host", "smtp.gmail.com");
-		emailProperties.put("smtp.mail.port", "587");
-		emailProperties.put("smtp.mail.auth", "true");
-		emailProperties.put("smtp.mail.starttls.enable", "true");
+		emailProperties.put("mail.smtp.host", "smtp.gmail.com");
+		emailProperties.put("mail.smtp.port", "587");
+		emailProperties.put("mail.smtp.auth", "true");
+		emailProperties.put("mail.smtp.starttls.enable", "true");
 		
 		Authenticator emailAuth = new Authenticator() {
 			@Override
@@ -45,17 +45,16 @@ public class EmailUtil {
 							+"Best Regards, \n"
 							+"Team Sec-B.");
 			Transport.send(emailMsg);
-			System.out.println("Email sent success");
+			return true;
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("Email sent failed");
+			return false;
 		}
 	}
 
 	public static void main(String[] args) {
-		int OTP =  (int)(Math.random() * 900000 ) + 100000;
-		sendRegisterOTP("piebytwo014@gmail.com", "Rakesh", OTP);
+		
 	}
 
 }

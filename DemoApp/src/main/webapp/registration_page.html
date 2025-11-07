@@ -5,14 +5,21 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="">
-	<input type="text" placeholder="First Name">
-	<input type="text" placeholder="Last Name">
-	<input type="text" placeholder="Please enter your Email Address.">
-	<input type="text" placeholder="Please enter your Password.">
-	<input type="text" placeholder="Please re-enter your Password.">
+<body>
+<h1>Welcome to Registration Page.</h1>
+<form action="RegisterServlet" method="post">
+	<input  type="text" placeholder="First Name" name="firstName" required="required">
 	<br>
-	<a type="button" href="">Register Now</a>
+	<input  type="text" placeholder="Last Name" name="lastName" required="required">
+	<br>
+	<input  type="text" placeholder="Mobile" name="mobile" required="required">
+	<br>
+	<input  type="email" placeholder="Email Add" name="email" required="required">
+	<br>
+	<input  type="password" placeholder="Your Password here" name="password" required="required">
+	<br>
+	<button type="submit">Register Now</button>
+	
 </form>
 </body>
 </html>

@@ -6,23 +6,23 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import shadow.org.bson.Document;
 
 import java.io.IOException;
 
 import com.demoapp.database.DatabaseConnection;
+import com.demoapp.util.EmailUtil;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class RegisterServlet
  */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/RegisterServlet")
+public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public RegisterServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,33 +31,35 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String email =  request.getParameter("email_key");
-		String password = request.getParameter("password_key");
+		String firstName =  request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String mobileNum =  request.getParameter("mobile");
+		String email =  request.getParameter("email");
+		String password = request.getParameter("password");
 		
-		Document user = DatabaseConnection.userLogin(email);
+		boolean saveDataStatus = DatabaseConnection.insertUserData(firstName, lastName, Integer.parseInt(mobileNum), email, password);
 		
-		if(user != null) {
-			if(email.equals(user.getString("userEmail")) && password.equals(user.getString("userPassword")) && user.getBoolean("isVerified")) {
+		if(saveDataStatus) {
+			int OTP =  (int)(Math.random() * 900000 ) + 100000;
+			boolean OTPSentStatus = EmailUtil.sendRegisterOTP(email, firstName + " " + lastName, OTP);
+			if(OTPSentStatus) {
 				HttpSession session = request.getSession();
-				session.setAttribute("name_key", user.getString("firstName") + " " + user.getString("lastName"));
-				response.sendRedirect("home.jsp");
-			}else if(email.equals(user.getString("userEmail")) && password.equals(user.getString("userPassword")) && !user.getBoolean("isVerified")) {
-				System.out.println("Account not verified, please retry");
-			}else if(email.equals(user.getString("userEmail")) && !password.equals(user.getString("userPassword")) && user.getBoolean("isVerified")) {
-				System.out.println("The password is invalid");
+				session.setAttribute("sentOTP", OTP);
+				session.setAttribute("userEmail", email);
+				response.sendRedirect("verify_otp_page.html");
+			}
+			else {
+				System.out.println("OTP SENT FAILED");
 			}
 		}else {
-			System.out.println("No Account Found");
+			System.out.println("Save Data Failed");
 		}
-		
-		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Thisi shrw a E");
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
