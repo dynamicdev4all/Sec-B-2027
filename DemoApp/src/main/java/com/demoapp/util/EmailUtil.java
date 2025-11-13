@@ -2,6 +2,8 @@ package com.demoapp.util;
 
 import java.util.Properties;
 
+import com.demoapp.config.AppSecrets;
+
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -15,7 +17,7 @@ public class EmailUtil {
 	
 	public static boolean sendRegisterOTP(String to, String userName, int OTP) {
 		String senderEmail = "test.duck.mail@gmail.com";
-		String senderPassword = "mmnzmrjapqjokcbf";
+		String senderPassword = AppSecrets.getSecretData("EMAIL_OTP_PASSWORD", "en", "US");
 		
 		Properties emailProperties = new Properties();
 		emailProperties.put("mail.smtp.host", "smtp.gmail.com");

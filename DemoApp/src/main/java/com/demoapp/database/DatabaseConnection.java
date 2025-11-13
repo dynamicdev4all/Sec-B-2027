@@ -1,6 +1,7 @@
 package com.demoapp.database;
 
 
+import com.demoapp.config.AppSecrets;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
@@ -13,7 +14,9 @@ import com.mongodb.client.MongoDatabase;
 import shadow.org.bson.Document;
 
 public class DatabaseConnection {
-	static String connectionString = "mongodb+srv://piebytwo014:piebytwo014@cluster0.6e2rbvw.mongodb.net/?appName=Cluster0";
+	static String DB_USERNAME = AppSecrets.getSecretData("MONGO_DB_USERNAME", "en", "US");
+	static String DB_PASSWORD = AppSecrets.getSecretData("MONGO_DB_PASSWORD", "en", "US");
+	static String connectionString = "mongodb+srv://"+DB_USERNAME+":"+DB_PASSWORD+"@cluster0.6e2rbvw.mongodb.net/?appName=Cluster0";
 
     static ServerApi serverApi = ServerApi.builder()
             .version(ServerApiVersion.V1)
@@ -52,6 +55,11 @@ public class DatabaseConnection {
     
 	public static boolean insertUserData(String fName, String lName, int phone, String userMail, String userPwd) {
 		try {
+			Document userToBeRegistered = new Document("userEmail", userMail);	
+			Document isExist = c.find(userToBeRegistered).first(); //fetch
+			if(isExist != null) {
+				return false;
+			}
 			 c.insertOne(new Document("firstName", fName)
 						.append("lastName", lName)
 						.append("phone", phone)
