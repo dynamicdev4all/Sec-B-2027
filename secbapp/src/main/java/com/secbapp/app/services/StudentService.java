@@ -24,6 +24,9 @@ public class StudentService {
 	public void showMarks() {
 		
 	}
+	public Student delete(int id) {
+		return repo.removeUser(id);
+	}
 	
 	public Student readOne(int id) {
 		return repo.readOne(id);

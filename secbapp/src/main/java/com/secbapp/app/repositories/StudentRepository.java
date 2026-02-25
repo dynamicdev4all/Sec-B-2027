@@ -49,7 +49,7 @@ public class StudentRepository {
 		return list;
 	}
 	
-	public void removeUser(int id) {
-		db.remove(id);
+	public Student removeUser(int id) {
+		return db.remove(id);
 	}
 }

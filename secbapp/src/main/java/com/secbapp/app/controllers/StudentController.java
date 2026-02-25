@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +18,6 @@ public class StudentController {
 	
 	@Autowired
 	StudentService service;
-	@Autowired
-	AdminService service2;
 	
 	
 	//Create
@@ -27,24 +26,26 @@ public class StudentController {
 		return service.register(newStudent);
 	}
 	
-	//Read All
-	@GetMapping("/admin/show_all")
-	public ArrayList<Student> readAll() {
-		return service2.viewAll();	
-	}
-	
+
 	//Read One
-	public Student readOne(int id) {
+	@GetMapping("/student/fetch_one/{id}")
+	public Student readOne(@PathVariable int id) {
 		return service.readOne(id);
 	}
 	
 	//Update
+	
 	public Student updateStudent(int id, Student updatedStudent) {
 		return service.update(id, updatedStudent);
 	}
 	
 	//Delete
-	public void deleteStudent(int id) {
-		
+	@GetMapping("/student/delete_user/{id}")
+	public String deleteStudent(@PathVariable int id) {
+		Student student = service.delete(id);
+		if(student != null) {
+			return "User Deleted";
+		}
+		return "User Does not exist or not deleted";
 	}
 }
